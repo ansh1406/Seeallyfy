@@ -40,3 +40,15 @@ void convert_image(cv::Mat &image ,std::string &output){
         output += '\n';
     }
 }
+
+void convert_image(const std::string& image_path, int width, int height, std::string& output) {
+    cv::Mat image = cv::imread(image_path);
+    if (image.empty()) {
+        output = "Image not found!";
+        return;
+    }
+    
+    cv::resize(image, image, cv::Size(width, height));
+    toGrayscale(image);
+    convert_image(image, output);
+}
