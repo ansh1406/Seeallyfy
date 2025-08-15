@@ -5,6 +5,7 @@
 /// @brief Header file for ASCII image and video conversion functions
 
 #include <opencv2/opencv.hpp>
+#include <string>
 
 /// @brief Takes the path of the image and converts it into ASCII image
 /// @param image_path Path of the image can be relative or absolute
@@ -32,9 +33,9 @@ void convert_video(cv::VideoCapture &video, std::string& output);
 
 /// @brief Maps a pixel value to an ASCII character based on the provided character set
 /// @param pixel Pixel value (0-255)
-/// @param ascii_chars Vector of ASCII characters to map to
+/// @param ascii_chars String of ASCII characters to map to
 /// @return Corresponding ASCII character
-char mapToAscii(const uchar& pixel, const std::vector<char>& ascii_chars);
+char mapToAscii(const uchar& pixel, const std::string& ascii_chars);
 
 /// @brief Gets the combined pixel value from a 1x2 block in the image
 /// @param image OpenCV Mat object containing the image
