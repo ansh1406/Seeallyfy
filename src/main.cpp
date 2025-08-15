@@ -7,6 +7,8 @@
 
 #include "ascii_converter.hpp"
 
+/// @brief View Ascii image from path
+/// @param image_path Path of Ascii image
 void view_ascii_image(const std::string &image_path)
 {
     std::ifstream file(image_path);
@@ -17,7 +19,8 @@ void view_ascii_image(const std::string &image_path)
     }
     std::cout << file.rdbuf();
 }
-
+/// @brief Play Ascii video from path
+/// @param video_path Path of Ascii video
 void play_ascii_video(const std::string &video_path)
 {
     std::ifstream file(video_path);
@@ -65,6 +68,7 @@ void play_ascii_video(const std::string &video_path)
     }
 }
 
+/// @brief Print help message
 void print_help()
 {
     std::cout << "Usage: Seeallyfy [OPTIONS] [Optional options]\n"
