@@ -61,3 +61,39 @@ void convert_image(const std::string& image_path, int width, int height, std::st
         std::cerr << "Error opening output file: " << output_path << std::endl;
     }
 }
+
+void convert_video(cv::VideoCapture &video, std::string& output) {
+    if (!video.isOpened()) {
+        output = "Video capture is not opened!";
+        return;
+    }
+    video.set(cv::CAP_PROP_FRAME_WIDTH, 200);
+    video.set(cv::CAP_PROP_FRAME_HEIGHT, 100);
+    output.clear();
+    cv::Mat frame;
+    while (video.read(frame)) {
+        toGrayscale(frame);
+        std::string asciiImage;
+        convert_image(frame, asciiImage);
+        output += asciiImage + "\n";
+    }
+}
+
+void convert_video(const std::string& video_path, int width, int height, int fps,std::string& output_path) {
+    cv::VideoCapture video(video_path);
+    if (!video.isOpened()) {
+        return;
+    }
+    video.set(cv::CAP_PROP_FRAME_WIDTH, width);
+    video.set(cv::CAP_PROP_FRAME_HEIGHT, height);
+    video.set(cv::CAP_PROP_FPS, fps);
+    std::string output;
+    convert_video(video, output);
+    std::ofstream ofs(output_path);
+    if (ofs.is_open()) {
+        ofs << output;
+        ofs.close();
+    } else {
+        std::cerr << "Error opening output file: " << output_path << std::endl;
+    }
+}
