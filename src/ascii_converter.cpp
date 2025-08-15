@@ -75,7 +75,7 @@ void convert_video(cv::VideoCapture &video, std::string& output) {
         toGrayscale(frame);
         std::string asciiImage;
         convert_image(frame, asciiImage);
-        output += asciiImage + "\n";
+        output += asciiImage;
     }
 }
 
