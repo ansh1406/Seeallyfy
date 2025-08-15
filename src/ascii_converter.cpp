@@ -5,7 +5,7 @@
 /// @brief ASCII character set used for conversion in decresing order of brightness since background of the terminal will be black
 const std::string ascii_chars =  "@$B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'.";
 
-char mapToAscii(const uchar& pixel, const std::vector<char>& ascii_chars) {
+char mapToAscii(const uchar& pixel, const std::string &ascii_chars) {
     int index = static_cast<int>(pixel * (ascii_chars.size() - 1) / 255);
     return ascii_chars[index];
 }
