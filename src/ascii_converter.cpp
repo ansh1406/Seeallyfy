@@ -1,5 +1,7 @@
 #include "ascii_converter.hpp"
 
+#include <fstream>
+
 /// @brief ASCII character set used for conversion in decresing order of brightness since background of the terminal will be black
 const std::string ascii_chars =  "@$B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'.";
 
@@ -41,14 +43,21 @@ void convert_image(cv::Mat &image ,std::string &output){
     }
 }
 
-void convert_image(const std::string& image_path, int width, int height, std::string& output) {
+void convert_image(const std::string& image_path, int width, int height, std::string& output_path) {
     cv::Mat image = cv::imread(image_path);
     if (image.empty()) {
-        output = "Image not found!";
         return;
     }
-    
+    std::string output;
     cv::resize(image, image, cv::Size(width, height));
     toGrayscale(image);
     convert_image(image, output);
+    std::ofstream ofs(output_path);
+    if (ofs.is_open()) {
+        ofs << output;
+        ofs.close();
+    }
+    else{
+        std::cerr << "Error opening output file: " << output_path << std::endl;
+    }
 }

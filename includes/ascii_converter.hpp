@@ -7,24 +7,24 @@
 #include <opencv2/opencv.hpp>
 #include <string>
 
-/// @brief Takes the path of the image and converts it into ASCII image
+/// @brief Takes the path of the image and converts it into ASCII image and save it
 /// @param image_path Path of the image can be relative or absolute
 /// @param width Resized width of the image in pixels
 /// @param height Resized height of the image in pixels
-/// @param output Output string that will hold ASCII image
-void convert_image(const std::string& image_path, int width, int height, std::string& output);
+/// @param output_path Output file path that will hold ASCII image can be relative or absolute
+void convert_image(const std::string& image_path, int width, int height, std::string& output_path);
 
 /// @brief Takes the image as opencv Mat object and converts it into ASCII image
 /// @param image OpenCV Mat object containing the image
 /// @param output Output string that will hold ASCII image
 void convert_image(cv::Mat &image, std::string& output);
 
-/// @brief Takes the path of the video and converts it into ASCII video
+/// @brief Takes the path of the video and converts it into ASCII video ad save it
 /// @param video_path Path of the video can be relative or absolute
 /// @param width Resized width of the video in pixels
 /// @param height Resized height of the video in pixels
-/// @param output Output string that will hold ASCII video
-void convert_video(const std::string& video_path, int width, int height, std::string& output);
+/// @param output_path Output file path that will hold ASCII video can be relative or absolute
+void convert_video(const std::string& video_path, int width, int height, std::string& output_path);
 
 /// @brief Takes the video as opencv VideoCapture object and converts it into ASCII video
 /// @param video OpenCV VideoCapture object containing the video
