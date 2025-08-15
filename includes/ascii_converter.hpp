@@ -23,8 +23,9 @@ void convert_image(cv::Mat &image, std::string& output);
 /// @param video_path Path of the video can be relative or absolute
 /// @param width Resized width of the video in pixels
 /// @param height Resized height of the video in pixels
+/// @param fps Frames per second for the output ASCII video
 /// @param output_path Output file path that will hold ASCII video can be relative or absolute
-void convert_video(const std::string& video_path, int width, int height, std::string& output_path);
+void convert_video(const std::string& video_path, int width, int height, int fps, std::string& output_path);
 
 /// @brief Takes the video as opencv VideoCapture object and converts it into ASCII video
 /// @param video OpenCV VideoCapture object containing the video
