@@ -3,39 +3,50 @@
 #include <fstream>
 
 /// @brief ASCII character set used for conversion in decresing order of brightness since background of the terminal will be black
-const std::string ascii_chars =  "@$B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'.";
+const std::string ascii_chars = "@$B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'.";
 
-char mapToAscii(const uchar& pixel, const std::string &ascii_chars) {
-    int index = static_cast<int>(pixel * (ascii_chars.size() - 1) / 255);
+char mapToAscii(const uchar &pixel, const std::string &ascii_chars)
+{
+    int index = static_cast<int>(pixel * (ascii_chars.size() - 1) / 256);
     return ascii_chars[index];
 }
-uchar getCombinedPixel(const cv::Mat& image, int x, int y) {
+uchar getCombinedPixel(const cv::Mat &image, int x, int y)
+{
     int y1 = y;
     int y2 = y + 1;
 
-    if (x < 0 || x >= image.cols || y1 < 0 || y1 >= image.rows || y2 < 0 || y2 >= image.rows) {
+    if (x < 0 || x >= image.cols || y1 < 0 || y1 >= image.rows || y2 < 0 || y2 >= image.rows)
+    {
         return 0;
     }
     return (image.at<uchar>(y1, x) + image.at<uchar>(y2, x)) / 2;
 }
 
-void toGrayscale(cv::Mat &image) {
-    if (image.channels() == 3) {
+void toGrayscale(cv::Mat &image)
+{
+    if (image.channels() == 3)
+    {
         cv::cvtColor(image, image, cv::COLOR_BGR2GRAY);
-    } else if (image.channels() == 4) {
+    }
+    else if (image.channels() == 4)
+    {
         cv::cvtColor(image, image, cv::COLOR_BGRA2GRAY);
     }
 }
 
-void convert_image(cv::Mat &image ,std::string &output){
-    if (image.empty()) {
+void convert_image(cv::Mat &image, std::string &output)
+{
+    if (image.empty())
+    {
         output = "Image is empty!";
         return;
     }
-    
+
     output.clear();
-    for (int y = 0; y < image.rows; y += 2) {
-        for (int x = 0; x < image.cols; x++) {
+    for (int y = 0; y < image.rows; y += 2)
+    {
+        for (int x = 0; x < image.cols; x++)
+        {
             uchar pixel = getCombinedPixel(image, x, y);
             output += mapToAscii(pixel, ascii_chars);
         }
@@ -43,9 +54,11 @@ void convert_image(cv::Mat &image ,std::string &output){
     }
 }
 
-void convert_image(const std::string& image_path, int width, int height, std::string& output_path) {
+void convert_image(const std::string &image_path, int width, int height, std::string &output_path)
+{
     cv::Mat image = cv::imread(image_path);
-    if (image.empty()) {
+    if (image.empty())
+    {
         return;
     }
     std::string output;
@@ -53,25 +66,29 @@ void convert_image(const std::string& image_path, int width, int height, std::st
     toGrayscale(image);
     convert_image(image, output);
     std::ofstream ofs(output_path);
-    if (ofs.is_open()) {
+    if (ofs.is_open())
+    {
         ofs << output;
         ofs.close();
     }
-    else{
+    else
+    {
         std::cerr << "Error opening output file: " << output_path << std::endl;
     }
 }
 
-void convert_video(cv::VideoCapture &video, std::string& output) {
-    if (!video.isOpened()) {
+void convert_video(cv::VideoCapture &video, int width, int height, std::string &output)
+{
+    if (!video.isOpened())
+    {
         output = "Video capture is not opened!";
         return;
     }
-    video.set(cv::CAP_PROP_FRAME_WIDTH, 200);
-    video.set(cv::CAP_PROP_FRAME_HEIGHT, 100);
     output.clear();
     cv::Mat frame;
-    while (video.read(frame)) {
+    while (video.read(frame))
+    {
+        cv::resize(frame, frame, cv::Size(width, height));
         toGrayscale(frame);
         std::string asciiImage;
         convert_image(frame, asciiImage);
@@ -79,21 +96,25 @@ void convert_video(cv::VideoCapture &video, std::string& output) {
     }
 }
 
-void convert_video(const std::string& video_path, int width, int height, int fps,std::string& output_path) {
+void convert_video(const std::string &video_path, int width, int height, int fps, std::string &output_path)
+{
     cv::VideoCapture video(video_path);
-    if (!video.isOpened()) {
+    if (!video.isOpened())
+    {
         return;
     }
-    video.set(cv::CAP_PROP_FRAME_WIDTH, width);
-    video.set(cv::CAP_PROP_FRAME_HEIGHT, height);
-    video.set(cv::CAP_PROP_FPS, fps);
     std::string output;
-    convert_video(video, output);
+    std::string header = std::to_string(width) + " " + std::to_string(height / 2) + " " + std::to_string(fps) + "\n";
+    convert_video(video, width, height, output);
     std::ofstream ofs(output_path);
-    if (ofs.is_open()) {
+    if (ofs.is_open())
+    {
+        ofs << header;
         ofs << output;
         ofs.close();
-    } else {
+    }
+    else
+    {
         std::cerr << "Error opening output file: " << output_path << std::endl;
     }
 }
