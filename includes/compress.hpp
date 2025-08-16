@@ -1,5 +1,6 @@
 #ifndef COMPRESS_HPP
 #define COMPRESS_HPP
+#ifdef WITH_COMPRESSION
 #include "zlib.h"
 #include <fstream>
 #include <vector>
@@ -16,4 +17,5 @@ bool compressFile(const std::string inputPath, const std::string outputPath);
 /// @param outputPath Output file path
 /// @return Success status
 bool decompressFile(const std::string inputPath, const std::string outputPath);
+#endif
 #endif

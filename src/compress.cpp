@@ -1,3 +1,4 @@
+#ifdef WITH_COMPRESSION
 #include "compress.hpp"
 
 bool compressFile(const std::string inputPath, const std::string outputPath)
@@ -59,3 +60,4 @@ bool decompressFile(const std::string inputPath, const std::string outputPath)
 
     return true;
 }
+#endif

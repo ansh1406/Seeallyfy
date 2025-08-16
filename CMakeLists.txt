@@ -18,8 +18,15 @@ if(NOT OpenCV_FOUND)
 endif()
 
 
-# Include directories
-include_directories(${OpenCV_INCLUDE_DIRS} includes includes/zlib)
+
+
+# Check if includes/zlib exists and define WITH_COMPRESSION macro
+if(EXISTS "${CMAKE_SOURCE_DIR}/includes/zlib")
+    add_compile_definitions(WITH_COMPRESSION)
+    include_directories(${OpenCV_INCLUDE_DIRS} includes includes/zlib)
+else()
+    include_directories(${OpenCV_INCLUDE_DIRS} includes)
+endif()
 
 # Add executable
 add_executable(${PROJECT_NAME} ${SOURCES})
