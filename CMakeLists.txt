@@ -18,10 +18,8 @@ if(NOT OpenCV_FOUND)
 endif()
 
 
-
-
 # Include directories
-include_directories(${OpenCV_INCLUDE_DIRS} includes)
+include_directories(${OpenCV_INCLUDE_DIRS} includes includes/zlib)
 
 # Add executable
 add_executable(${PROJECT_NAME} ${SOURCES})

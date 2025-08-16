@@ -1,6 +1,6 @@
 #ifndef COMPRESS_HPP
 #define COMPRESS_HPP
-#include "zlib/zlib.h"
+#include "zlib.h"
 #include <fstream>
 #include <vector>
 #include <string>
