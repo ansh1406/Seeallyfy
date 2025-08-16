@@ -5,6 +5,7 @@
 #include <sstream>
 
 #include "ascii_converter.hpp"
+#include "compress.hpp"
 
 /// @brief View Ascii image from path
 /// @param image_path Path of Ascii image
@@ -147,6 +148,8 @@ int main(int argc, char *argv[])
         std::string input_video = argv[2];
         std::string output_file = argv[3];
         convert_video(input_video, width, height, fps, output_file);
+        if (!compressFile(output_file, output_file))
+            return 1;
         std::cout << "Ascii video file saved to " << output_file << std::endl;
     }
     else if ((option == "--image-to-ascii" || option == "-i2a") && argc >= 4)
@@ -154,33 +157,49 @@ int main(int argc, char *argv[])
         std::string input_image = argv[2];
         std::string output_file = argv[3];
         convert_image(input_image, width, height, output_file);
+        if (!compressFile(output_file, output_file))
+            return 1;
         std::cout << "Ascii image file saved to" << output_file << std::endl;
     }
     else if ((option == "--play-ascii-video" || option == "-pv") && argc >= 3)
     {
         std::string ascii_video_file = argv[2];
-        play_ascii_video(ascii_video_file);
+        if (!decompressFile(ascii_video_file, ascii_video_file + ".temp"))
+            return 1;
+        play_ascii_video(ascii_video_file + ".temp");
+        if (!compressFile(ascii_video_file + ".temp", ascii_video_file))
+            return 1;
+        std::remove((ascii_video_file + ".temp").c_str());
     }
     else if ((option == "--view-ascii-image" || option == "-pi") && argc >= 3)
     {
         std::string ascii_image_file = argv[2];
-        view_ascii_image(ascii_image_file);
+        if (!decompressFile(ascii_image_file, ascii_image_file + ".temp"))
+            return 1;
+        view_ascii_image(ascii_image_file + ".temp");
+        if (!compressFile(ascii_image_file + ".temp", ascii_image_file))
+            return 1;
+        std::remove((ascii_image_file + ".temp").c_str());
     }
     else if ((option == "--video-to-ascii-and-play" || option == "-v2ap") && argc >= 4)
     {
         std::string input_video = argv[2];
         std::string output_file = argv[3];
         convert_video(input_video, width, height, fps, output_file);
-        std::cout << "Ascii video file saved to " << input_video << std::endl;
         play_ascii_video(output_file);
+        if (!compressFile(output_file, output_file))
+            ;
+        std::cout << "Ascii video file saved to " << input_video << std::endl;
     }
     else if ((option == "--image-to-ascii-and-view" || option == "-i2av") && argc >= 4)
     {
         std::string input_image = argv[2];
         std::string output_file = argv[3];
         convert_image(input_image, width, height, output_file);
-        std::cout << "Ascii image file saved to " << input_image << std::endl;
         view_ascii_image(output_file);
+        if (!compressFile(output_file, output_file))
+            ;
+        std::cout << "Ascii image file saved to " << input_image << std::endl;
     }
     else
     {
