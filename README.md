@@ -19,8 +19,11 @@ Seeallyfy is a command-line tool for converting videos and images to ASCII art, 
 
 ## Build Instructions
 
-1. Install OpenCV and ensure FFmpeg DLLs are available.
-2. Configure and build with CMake:
+1. Download the zlib source folder and place it inside the `includes` directory:
+   - You can get zlib from https://zlib.net/ or https://github.com/madler/zlib
+   - Place the contents of the zlib folder in `includes/zlib`
+2. Install OpenCV and ensure FFmpeg DLLs are available.
+3. Configure and build with CMake:
 
    ```sh
    mkdir build
@@ -29,7 +32,7 @@ Seeallyfy is a command-line tool for converting videos and images to ASCII art, 
    cmake --build . --config Release
    ```
 
-3. The required OpenCV and FFmpeg DLLs will be copied to your output folder automatically.
+4. The required OpenCV and FFmpeg DLLs will be copied to your output folder automatically.
 
 ## Usage
 
